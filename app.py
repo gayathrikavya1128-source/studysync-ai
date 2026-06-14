@@ -27,6 +27,15 @@ priority_subject = st.selectbox(
     if subjects.strip()
     else ["No subjects entered"]
 )
+difficulty = st.selectbox(
+    "Select difficulty level",
+    ["Easy", "Medium", "Hard"]
+)
+if difficulty == "Hard":
+    study_hours += 2
+
+elif difficulty == "Medium":
+    study_hours += 1
 if st.button("Generate Study Plan"):
 
     if subjects.strip():
@@ -63,3 +72,15 @@ if st.button("Generate Study Plan"):
 days_left = (exam_date - date.today()).days
 
 st.write(f"⏳ Days Left Until Exam: {days_left} days")
+st.subheader("Study Progress")
+
+progress = st.slider(
+    "How much have you completed?",
+    0,
+    100,
+    0
+)
+
+st.progress(progress)
+
+st.write(f"{progress}% completed")
