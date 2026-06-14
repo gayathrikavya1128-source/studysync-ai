@@ -1,4 +1,5 @@
 import streamlit as st
+from datetime import date
 
 st.title("StudySync AI")
 
@@ -59,4 +60,6 @@ if st.button("Generate Study Plan"):
 
     else:
         st.warning("Please enter at least one subject.")
+days_left = (exam_date - date.today()).days
 
+st.write(f"⏳ Days Left Until Exam: {days_left} days")
