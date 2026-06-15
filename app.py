@@ -1,7 +1,9 @@
 import streamlit as st
+import pandas as pd
 from datetime import date
 
-st.title("StudySync AI")
+st.title("📚 StudySync AI")
+st.caption("Smart Study Planner for Students")
 
 st.write("Welcome to StudySync AI - Smart Study Planner for Students")
 
@@ -20,22 +22,26 @@ study_hours = st.number_input(
     max_value=24,
     value=4
 )
+
 exam_date = st.date_input("Select Exam Date")
+
 priority_subject = st.selectbox(
     "Select your highest priority subject",
     [s.strip() for s in subjects.split("\n") if s.strip()]
     if subjects.strip()
     else ["No subjects entered"]
 )
+
 difficulty = st.selectbox(
     "Select difficulty level",
     ["Easy", "Medium", "Hard"]
 )
+
 if difficulty == "Hard":
     study_hours += 2
-
 elif difficulty == "Medium":
     study_hours += 1
+
 if st.button("Generate Study Plan"):
 
     if subjects.strip():
@@ -47,9 +53,18 @@ if st.button("Generate Study Plan"):
         ]
 
         st.write(f"📅 Exam Date: {exam_date}")
+
+        days_left = (exam_date - date.today()).days
+
+        st.write(f"⏳ Days Left Until Exam: {days_left} days")
+
+        if days_left <= 7:
+            st.error("⚠️ Exam is very close! Increase study focus.")
+
         st.subheader("Today's Study Plan")
 
         remaining_subjects = len(subject_list) - 1
+        plan_data = []
 
         for subject in subject_list:
 
@@ -65,13 +80,27 @@ if st.button("Generate Study Plan"):
                 else:
                     allocated_hours = study_hours
 
-            st.write(f"📚 {subject}: {allocated_hours} hours")
+            plan_data.append([subject, allocated_hours])
+
+        df = pd.DataFrame(
+            plan_data,
+            columns=["Subject", "Allocated Hours"]
+        )
+
+        st.table(df)
+
+        csv = df.to_csv(index=False)
+
+        st.download_button(
+            label="📥 Download Study Plan",
+            data=csv,
+            file_name="study_plan.csv",
+            mime="text/csv"
+        )
 
     else:
         st.warning("Please enter at least one subject.")
-days_left = (exam_date - date.today()).days
 
-st.write(f"⏳ Days Left Until Exam: {days_left} days")
 st.subheader("Study Progress")
 
 progress = st.slider(
@@ -84,3 +113,9 @@ progress = st.slider(
 st.progress(progress)
 
 st.write(f"{progress}% completed")
+
+st.divider()
+
+st.success(
+    "💪 Small progress every day leads to big success!"
+)
