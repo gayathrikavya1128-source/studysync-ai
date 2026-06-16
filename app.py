@@ -83,23 +83,34 @@ if st.button("Generate Study Plan"):
             plan_data.append([subject, allocated_hours])
 
         df = pd.DataFrame(
-            plan_data,
-            columns=["Subject", "Allocated Hours"]
-        )
+    plan_data,
+    columns=["Subject", "Allocated Hours"]
+)
 
-        st.table(df)
+    col1, col2, col3 = st.columns(3)
 
-        csv = df.to_csv(index=False)
+    with col1:
+      st.metric("Subjects", len(subject_list))
 
-        st.download_button(
+    with col2:
+      st.metric("Study Hours", study_hours)
+
+    with col3:
+      st.metric("Days Left", days_left)
+
+    st.table(df)
+
+    csv = df.to_csv(index=False)
+
+    st.download_button(
             label="📥 Download Study Plan",
             data=csv,
             file_name="study_plan.csv",
             mime="text/csv"
         )
 
-    else:
-        st.warning("Please enter at least one subject.")
+else:
+    st.warning("Please enter at least one subject.")
 
 st.subheader("Study Progress")
 
