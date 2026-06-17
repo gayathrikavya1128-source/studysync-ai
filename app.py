@@ -52,10 +52,9 @@ if st.button("Generate Study Plan"):
             if subject.strip()
         ]
 
-        st.write(f"📅 Exam Date: {exam_date}")
-
         days_left = (exam_date - date.today()).days
 
+        st.write(f"📅 Exam Date: {exam_date}")
         st.write(f"⏳ Days Left Until Exam: {days_left} days")
 
         if days_left <= 7:
@@ -83,39 +82,66 @@ if st.button("Generate Study Plan"):
             plan_data.append([subject, allocated_hours])
 
         df = pd.DataFrame(
-    plan_data,
-    columns=["Subject", "Allocated Hours"]
-)
+            plan_data,
+            columns=["Subject", "Allocated Hours"]
+        )
 
-    col1, col2, col3 = st.columns(3)
+        # Dashboard Metrics
+        col1, col2, col3 = st.columns(3)
 
-    with col1:
-      st.metric("Subjects", len(subject_list))
+        with col1:
+            st.metric("Subjects", len(subject_list))
 
-    with col2:
-      st.metric("Study Hours", study_hours)
+        with col2:
+            st.metric("Study Hours", study_hours)
 
-    with col3:
-      st.metric("Days Left", days_left)
+        with col3:
+            st.metric("Days Left", days_left)
 
-    st.dataframe(df)
-    st.subheader("📊 Study Hours Distribution")
+        # Table
+        st.dataframe(df)
 
-    chart_data = df.set_index("Subject")
+        # Chart
+        st.subheader("📊 Study Hours Distribution")
 
-    st.bar_chart(chart_data)
-    csv = df.to_csv(index=False)
+        chart_data = df.set_index("Subject")
+        st.bar_chart(chart_data)
 
-    st.download_button(
+        # AI Recommendation
+        st.subheader("🤖 AI Study Recommendation")
+
+        if days_left <= 3:
+            st.error(
+                f"Focus heavily on {priority_subject}. "
+                "Your exam is very close."
+            )
+
+        elif days_left <= 7:
+            st.warning(
+                f"Spend extra time on {priority_subject} "
+                "and revise daily."
+            )
+
+        else:
+            st.success(
+                f"You have enough time. Maintain consistent study "
+                f"for {priority_subject}."
+            )
+
+        # Download Button
+        csv = df.to_csv(index=False)
+
+        st.download_button(
             label="📥 Download Study Plan",
             data=csv,
             file_name="study_plan.csv",
             mime="text/csv"
         )
 
-else:
-    st.warning("Please enter at least one subject.")
+    else:
+        st.warning("Please enter at least one subject.")
 
+# Progress Tracker
 st.subheader("Study Progress")
 
 progress = st.slider(
