@@ -98,8 +98,12 @@ if st.button("Generate Study Plan"):
     with col3:
       st.metric("Days Left", days_left)
 
-    st.table(df)
+    st.dataframe(df)
+    st.subheader("📊 Study Hours Distribution")
 
+    chart_data = df.set_index("Subject")
+
+    st.bar_chart(chart_data)
     csv = df.to_csv(index=False)
 
     st.download_button(
