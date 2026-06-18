@@ -4,6 +4,7 @@ from datetime import date
 
 st.title("📚 StudySync AI")
 st.caption("Smart Study Planner for Students")
+st.markdown("---")
 
 st.write("Welcome to StudySync AI - Smart Study Planner for Students")
 
@@ -155,6 +156,27 @@ st.progress(progress)
 
 st.write(f"{progress}% completed")
 
+st.subheader("💡 Daily Study Tip")
+
+if progress < 25:
+    st.info(
+        "Start with small study sessions and build momentum."
+    )
+
+elif progress < 50:
+    st.info(
+        "Good progress! Stay consistent and avoid distractions."
+    )
+
+elif progress < 75:
+    st.success(
+        "You're doing well. Focus on revision and practice."
+    )
+
+else:
+    st.success(
+        "Excellent work! Continue revising important topics."
+    )
 st.divider()
 
 st.success(
