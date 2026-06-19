@@ -59,6 +59,10 @@ StudySync AI aims to help students plan their studies efficiently by generating 
 * Analytics dashboard
 * CSV export functionality
 
+## Live Demo
+
+https://studysync-ai-cpvcjntwumk8pjoxwkma6t.streamlit.app/
+
 ## 📄 License
 
 This project is licensed under the MIT License.
