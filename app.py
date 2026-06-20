@@ -104,7 +104,6 @@ if st.button("Generate Study Plan"):
 
         # Chart
         st.subheader("📊 Study Hours Distribution")
-
         chart_data = df.set_index("Subject")
         st.bar_chart(chart_data)
 
@@ -139,11 +138,43 @@ if st.button("Generate Study Plan"):
             mime="text/csv"
         )
 
+        # Daily Timetable
+        st.subheader("📅 Daily Study Timetable")
+
+        timetable_days = min(days_left, 7)
+
+        if timetable_days <= 0:
+            timetable_days = 1
+
+        for day in range(1, timetable_days + 1):
+
+            st.write(f"### Day {day}")
+
+            for subject in subject_list:
+
+                if subject == priority_subject:
+                    hours = round(
+                        (study_hours * 0.5),
+                        1
+                    )
+                else:
+                    hours = round(
+                        (study_hours * 0.5)
+                        / max(1, len(subject_list) - 1),
+                        1
+                    )
+
+                st.write(
+                    f"📚 {subject} - {hours} hrs"
+                )
+
+            st.divider()
+
     else:
         st.warning("Please enter at least one subject.")
 
 # Progress Tracker
-st.subheader("Study Progress")
+st.subheader("📈 Study Progress")
 
 progress = st.slider(
     "How much have you completed?",
@@ -156,6 +187,7 @@ st.progress(progress)
 
 st.write(f"{progress}% completed")
 
+# Daily Study Tip
 st.subheader("💡 Daily Study Tip")
 
 if progress < 25:
@@ -177,6 +209,7 @@ else:
     st.success(
         "Excellent work! Continue revising important topics."
     )
+
 st.divider()
 
 st.success(
