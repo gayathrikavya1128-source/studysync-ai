@@ -187,6 +187,33 @@ st.progress(progress)
 
 st.write(f"{progress}% completed")
 
+st.subheader("🎯 Exam Readiness Score")
+
+readiness_score = progress
+
+if study_hours >= 6:
+    readiness_score += 20
+elif study_hours >= 4:
+    readiness_score += 10
+
+if difficulty == "Hard":
+    readiness_score -= 10
+
+readiness_score = max(0, min(readiness_score, 100))
+
+st.metric(
+    "Readiness Score",
+    f"{readiness_score}/100"
+)
+
+if readiness_score >= 80:
+    st.success("🟢 You are well prepared!")
+
+elif readiness_score >= 50:
+    st.warning("🟡 You need more revision.")
+
+else:
+    st.error("🔴 High risk! Increase study effort.")
 # Daily Study Tip
 st.subheader("💡 Daily Study Tip")
 
