@@ -1,12 +1,36 @@
 import streamlit as st
 import pandas as pd
 from datetime import date
+with st.sidebar:
+    st.header("📚 StudySync AI")
+    st.info(
+        "Generate smart study plans, "
+        "track progress, and stay exam-ready."
+    )
 
 st.title("📚 StudySync AI")
+st.markdown(
+    """
+    <style>
+    .main {
+        padding-top: 1rem;
+    }
+    div[data-testid="stMetric"] {
+        border: 1px solid #444;
+        padding: 15px;
+        border-radius: 10px;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 st.caption("Smart Study Planner for Students")
 st.markdown("---")
 
-st.write("Welcome to StudySync AI - Smart Study Planner for Students")
+st.info(
+    "🎯 Personalized study planning with analytics, "
+    "timetables, and readiness tracking."
+)
 
 name = st.text_input("Enter your name")
 
