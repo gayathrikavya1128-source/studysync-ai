@@ -1,66 +1,17 @@
 import streamlit as st
 import pandas as pd
 from datetime import date
-with st.sidebar:
-    st.header("📚 StudySync AI")
-    st.info(
-        "Generate smart study plans, "
-        "track progress, and stay exam-ready."
-    )
-    st.markdown("---")
 
-    st.subheader("About")
-
-    st.write(
-        """
-        StudySync AI helps students:
-        • Generate study plans
-
-        • Track study progress
-
-        • Identify weak subjects
-
-        • Improve exam readiness
-
-        • Prepare for board examinations
-        """
-    )
 st.title("📚 StudySync AI")
-st.markdown(
-    """
-    <style>
-    .main {
-        padding-top: 1rem;
-    }
-    div[data-testid="stMetric"] {
-        border: 1px solid #444;
-        padding: 15px;
-        border-radius: 10px;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
 st.caption("Smart Study Planner for Students")
-st.success(
-    "🎓 Built for students preparing for board examinations."
-)
 st.markdown("---")
 
-st.info(
-    "🎯 Personalized study planning with analytics, "
-    "timetables, and readiness tracking."
-)
-tab1, tab2, tab3 = st.tabs([
-    "📚 Study Planner",
-    "📊 Analytics",
-    "🎯 Academic Advisor"
-])
+st.write("Welcome to StudySync AI - Smart Study Planner for Students")
+
 name = st.text_input("Enter your name")
 
 if name:
     st.success(f"Welcome, {name}!")
-
 
 subjects = st.text_area(
     "Enter subjects (one subject per line)"
@@ -91,8 +42,8 @@ if difficulty == "Hard":
     study_hours += 2
 elif difficulty == "Medium":
     study_hours += 1
-with tab1:
- if st.button("Generate Study Plan"):
+
+if st.button("Generate Study Plan"):
 
     if subjects.strip():
 
@@ -153,6 +104,7 @@ with tab1:
 
         # Chart
         st.subheader("📊 Study Hours Distribution")
+
         chart_data = df.set_index("Subject")
         st.bar_chart(chart_data)
 
@@ -187,74 +139,12 @@ with tab1:
             mime="text/csv"
         )
 
-        # Daily Timetable
-        st.subheader("📅 Daily Study Timetable")
-
-        timetable_days = min(days_left, 7)
-
-        if timetable_days <= 0:
-            timetable_days = 1
-
-        for day in range(1, timetable_days + 1):
-
-            st.write(f"### Day {day}")
-
-            for subject in subject_list:
-
-                if subject == priority_subject:
-                    hours = round(
-                        (study_hours * 0.5),
-                        1
-                    )
-                else:
-                    hours = round(
-                        (study_hours * 0.5)
-                        / max(1, len(subject_list) - 1),
-                        1
-                    )
-
-                st.write(
-                    f"📚 {subject} - {hours} hrs"
-                )
-
-            st.divider()
-
     else:
         st.warning("Please enter at least one subject.")
 
 # Progress Tracker
-with tab2:
- st.subheader("📈 Study Progress")
-with tab3:
- st.subheader("📊 Subject Performance Analysis")
+st.subheader("Study Progress")
 
-physics_marks = st.number_input(
-    "Physics Marks (%)",
-    min_value=0,
-    max_value=100,
-    value=60
-)
-
-chemistry_marks = st.number_input(
-    "Chemistry Marks (%)",
-    min_value=0,
-    max_value=100,
-    value=60
-)
-
-maths_marks = st.number_input(
-    "Maths Marks (%)",
-    min_value=0,
-    max_value=100,
-    value=60
-)
-
-biology_marks = st.number_input(
-    "Biology Marks (%)",
-    min_value=0,
-    max_value=100,
-    value=60
-)
 progress = st.slider(
     "How much have you completed?",
     0,
@@ -265,141 +155,7 @@ progress = st.slider(
 st.progress(progress)
 
 st.write(f"{progress}% completed")
-st.subheader("🚨 Weak Subject Analysis")
 
-subject_scores = {
-    "Physics": physics_marks,
-    "Chemistry": chemistry_marks,
-    "Maths": maths_marks,
-    "Biology": biology_marks
-}
-
-subject_scores = {
-    "Physics": physics_marks,
-    "Chemistry": chemistry_marks,
-    "Maths": maths_marks,
-    "Biology": biology_marks
-}
-st.subheader("📊 Subject Health Dashboard")
-
-for subject, marks in subject_scores.items():
-
-    if marks < 50:
-        st.error(f"🔴 {subject}: {marks}% (Weak)")
-
-    elif marks < 75:
-        st.warning(f"🟡 {subject}: {marks}% (Average)")
-
-    else:
-        st.success(f"🟢 {subject}: {marks}% (Strong)")
-weak_subject = min(
-    subject_scores,
-    key=subject_scores.get
-)
-
-st.warning(
-    f"Your weakest subject is {weak_subject} "
-    f"({subject_scores[weak_subject]}%)"
-)
-
-if subject_scores[weak_subject] < 50:
-    st.error(
-        f"Focus heavily on {weak_subject}. "
-        "Immediate improvement needed."
-    )
-else:
-    st.success(
-        f"You are doing okay in {weak_subject}, "
-        "but continue practicing."
-    )
-
-st.subheader("🎯 Recommended Focus Order")
-
-sorted_subjects = sorted(
-    subject_scores.items(),
-    key=lambda x: x[1]
-)
-
-for rank, (subject, marks) in enumerate(
-    sorted_subjects,
-    start=1
-):
-    st.write(
-        f"{rank}. {subject} ({marks}%)"
-    )
-st.subheader("🎯 Marks Booster Chapters")
-
-if weak_subject == "Physics":
-
-    st.info("""
-    Physics High-Weightage Topics:
-    • Current Electricity
-    • Electromagnetic Induction
-    • Semiconductor Electronics
-    • Ray Optics
-    • Dual Nature of Matter
-    """)
-
-elif weak_subject == "Chemistry":
-
-    st.info("""
-    Chemistry High-Weightage Topics:
-    • Electrochemistry
-    • Coordination Compounds
-    • Biomolecules
-    • Chemical Kinetics
-    • Aldehydes and Ketones
-    """)
-
-elif weak_subject == "Maths":
-
-    st.info("""
-    Maths High-Weightage Topics:
-    • Calculus
-    • Matrices
-    • Probability
-    • Differential Equations
-    • Applications of Integrals
-    """)
-
-elif weak_subject == "Biology":
-
-    st.info("""
-    Biology High-Weightage Topics:
-    • Genetics
-    • Biotechnology
-    • Human Health and Disease
-    • Ecology
-    • Reproduction
-    """)
-st.subheader("🎯 Exam Readiness Score")
-
-readiness_score = progress
-
-if study_hours >= 6:
-    readiness_score += 20
-elif study_hours >= 4:
-    readiness_score += 10
-
-if difficulty == "Hard":
-    readiness_score -= 10
-
-readiness_score = max(0, min(readiness_score, 100))
-
-st.metric(
-    "Readiness Score",
-    f"{readiness_score}/100"
-)
-
-if readiness_score >= 80:
-    st.success("🟢 You are well prepared!")
-
-elif readiness_score >= 50:
-    st.warning("🟡 You need more revision.")
-
-else:
-    st.error("🔴 High risk! Increase study effort.")
-# Daily Study Tip
 st.subheader("💡 Daily Study Tip")
 
 if progress < 25:
@@ -421,7 +177,6 @@ else:
     st.success(
         "Excellent work! Continue revising important topics."
     )
-
 st.divider()
 
 st.success(
