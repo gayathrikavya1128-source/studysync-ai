@@ -7,7 +7,24 @@ with st.sidebar:
         "Generate smart study plans, "
         "track progress, and stay exam-ready."
     )
+    st.markdown("---")
 
+    st.subheader("About")
+
+    st.write(
+        """
+        StudySync AI helps students:
+        • Generate study plans
+
+        • Track study progress
+
+        • Identify weak subjects
+
+        • Improve exam readiness
+
+        • Prepare for board examinations
+        """
+    )
 st.title("📚 StudySync AI")
 st.markdown(
     """
@@ -25,6 +42,9 @@ st.markdown(
     unsafe_allow_html=True
 )
 st.caption("Smart Study Planner for Students")
+st.success(
+    "🎓 Built for students preparing for board examinations."
+)
 st.markdown("---")
 
 st.info(
@@ -40,9 +60,6 @@ name = st.text_input("Enter your name")
 
 if name:
     st.success(f"Welcome, {name}!")
-
-
-
 
 
 subjects = st.text_area(
